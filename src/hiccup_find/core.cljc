@@ -11,12 +11,12 @@
 (defn hiccup-nodes
   "Takes a hiccup tree and returns a list of all the nodes in it.
 
-[:html
- [:body
+  [:html
+  [:body
   '([:p \"Hey\"]
     [:p \"There\"])]]
 
-turns into
+  turns into
 
 ([:html [:body '([:p \"Hey\"] [:p \"There\"])]]
  [:body '([:p \"Hey\"] [:p \"There\"])]
