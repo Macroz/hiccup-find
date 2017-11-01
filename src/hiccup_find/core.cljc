@@ -18,10 +18,10 @@
 
   turns into
 
-([:html [:body '([:p \"Hey\"] [:p \"There\"])]]
- [:body '([:p \"Hey\"] [:p \"There\"])]
- [:p \"Hey\"]
- [:p \"There\"])"
+  ([:html [:body '([:p \"Hey\"] [:p \"There\"])]]
+   [:body '([:p \"Hey\"] [:p \"There\"])]
+   [:p \"Hey\"]
+   [:p \"There\"])"
   [root]
   (->> root
        hiccup-tree
