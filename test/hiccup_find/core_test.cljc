@@ -2,6 +2,7 @@
   (:require #?(:cljs [cljs.test :refer-macros [deftest is testing run-tests]]
                :clj [clojure.test :refer :all])
             [hiccup-find.core :refer [hiccup-find
+                                      hiccup-find-first
                                       hiccup-string
                                       hiccup-symbol-matches?
                                       hiccup-text
@@ -42,6 +43,22 @@
   (is (= :div.foo.bar#quux (normalized-symbol [:div.foo#quux {:class "bar"}])))
   (is (= :div.foo.bar#quux (normalized-symbol [:div.foo {:class "bar" :id "quux"}])))
   (is (= :div.foo.bar#quux (normalized-symbol [:div {:class "foo bar" :id "quux"}]))))
+
+
+
+(deftest test-hiccup-find-first
+  (is (= [] (hiccup-find-first [:div] [:span])))
+  (is (= [[:span 42]] (hiccup-find-first [:div :span] [:div [:span 42]])))
+  (is (= [[:div#1 [:div#2 [:span 42]]]] (hiccup-find-first [:div] [:div#1 [:div#2 [:span 42]]])))
+  (is (= [[:div.foo
+           [:div.quux [:div.foo.bar "a"]]
+           [:div.quux [:div.foo.bar "b"]]]]
+         (hiccup-find-first [:.foo]
+                            [:div.foo [:div.quux [:div.foo.bar "a"]] [:div.quux [:div.foo.bar "b"]]])))
+  (is (= [[:div.quux [:div.foo.bar "a"]]
+          [:div.quux [:div.foo.bar "b"]]]
+         (hiccup-find-first [:.quux]
+                            [:div.foo [:div.quux [:div.foo.bar "a"]] [:div.quux [:div.foo.bar "b"]]]))))
 
 (deftest test-hiccup-find
 
