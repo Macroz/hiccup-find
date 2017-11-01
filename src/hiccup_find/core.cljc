@@ -106,6 +106,30 @@
     (hiccup-attribute-matches? q node)
     (hiccup-symbol-matches? q (normalized-symbol node))))
 
+(defn node-children [node]
+  (when (or (vector? node) (seq? node))
+    (if (map? (second node))
+      (drop 2 node)
+      (rest node))))
+
+(defn hiccup-find-first
+  "Return the node from the hiccup document matching the query, if any.
+   The query is a vector of hiccup symbols; keywords naming tag names, classes
+   and ids (either one or a combination) like :tag.class.class2#id
+
+   Maps can be used to query for attributes of a node.
+
+   Stops at the first level of match and does not recurse to its children like `hiccup-find`."
+  ([query root] (hiccup-find-first query nil root))
+  ([query parent root]
+   (if (empty? query)
+     [parent]
+     (if (node-matcher (first query) root)
+       (if (empty? (rest query))
+         [root]
+         (mapcat (partial hiccup-find-first (rest query) root) (node-children root)))
+       (mapcat (partial hiccup-find-first query root) (node-children root))))))
+
 (defn hiccup-find
   "Return the node from the hiccup document matching the query, if any.
    The query is a vector of hiccup symbols; keywords naming tag names, classes
