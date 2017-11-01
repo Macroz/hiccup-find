@@ -109,7 +109,9 @@
 (defn hiccup-find
   "Return the node from the hiccup document matching the query, if any.
    The query is a vector of hiccup symbols; keywords naming tag names, classes
-   and ids (either one or a combination) like :tag.class.class2#id"
+   and ids (either one or a combination) like :tag.class.class2#id
+
+   Maps can be used to query for attributes of a node."
   [query root]
   (if (and (seq root) (seq query))
     (recur (rest query)
