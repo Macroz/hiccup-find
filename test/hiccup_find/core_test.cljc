@@ -18,10 +18,18 @@
   (is (hiccup-symbol-matches? :p.more.class :p.class.more)))
 
 (deftest test-hiccup-attrs-parts []
+  (is (= {:id nil :classes nil :attrs nil}
+         (hiccup-attrs-parts nil)))
+  (is (= {:id nil :classes nil :attrs nil}
+         (hiccup-attrs-parts "")))
   (is (= {:id "quux" :classes ["foo" "bar"] :attrs {:id "quux" :class "foo bar"}}
          (hiccup-attrs-parts [:div.x.y#z {:id "quux" :class "foo bar"}]))))
 
 (deftest test-hiccup-symbol-parts []
+  (is (= {:tag nil :id nil :classes nil :attrs {:id nil :class nil}}
+         (hiccup-symbol-parts nil)))
+  (is (= {:tag nil :id nil :classes nil :attrs {:id nil :class nil}}
+         (hiccup-symbol-parts "")))
   (is (= {:tag "div" :id "quux" :classes ["foo" "bar"] :attrs {:id "quux" :class "foo bar"}}
          (hiccup-symbol-parts [:div.foo.bar#quux]))))
 

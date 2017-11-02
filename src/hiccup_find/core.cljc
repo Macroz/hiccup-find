@@ -47,10 +47,10 @@
         tag (first coll)
         id (first (filter #(str/starts-with? % "#") coll))
         classes (map #(subs % 1) (filter #(str/starts-with? % ".") coll))]
-    {:tag (subs tag 1)
+    {:tag (when tag (subs tag 1))
      :id (when id (subs id 1))
-     :attrs {:id (when id (subs id 1)) :class (str/join " " classes)}
-     :classes classes}))
+     :attrs {:id (when id (subs id 1)) :class (when (seq classes) (str/join " " classes))}
+     :classes (when (seq classes) classes)}))
 
 (defn merge-attrs
   "Merge two attribute maps with special joining of :class"
